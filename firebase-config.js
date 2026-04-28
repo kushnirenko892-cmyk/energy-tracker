@@ -20,7 +20,7 @@ let firebase = {
   auth: null,
   db: null,
   GoogleAuthProvider: null,
-  signInWithRedirect: null, // Изменили с Popup на Redirect для телефонов
+  signInWithPopup: null, // Изменили с Popup на Redirect для телефонов
   signOut: null,
   onAuthStateChanged: null, // Добавили слушатель сессии
   collection: null,
@@ -42,7 +42,7 @@ if (isConfigured) {
     getAuth,
     GoogleAuthProvider,
     setPersistence,
-    signInWithRedirect, // Изменили
+    signInWithPopup, // Изменили
     signOut,
     onAuthStateChanged // Добавили
   } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
@@ -60,7 +60,7 @@ if (isConfigured) {
     auth,
     db: getFirestore(app),
     GoogleAuthProvider,
-    signInWithRedirect,
+    signInWithPopup,
     signOut,
     onAuthStateChanged,
     collection, query, where, orderBy, onSnapshot,
