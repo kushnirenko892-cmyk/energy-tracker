@@ -1,4 +1,4 @@
-const CACHE_NAME = "energy-task-tracker-v2";
+const CACHE_NAME = "energy-task-tracker-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
