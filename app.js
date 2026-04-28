@@ -419,11 +419,10 @@ function subscribeToFirestore() {
 async function signInWithGoogle() {
   try {
     const provider = new services.GoogleAuthProvider();
-    // Теперь используем Redirect. Это гарантированно работает на всех телефонах!
-    await services.signInWithRedirect(services.auth, provider);
+    await services.signInWithPopup(services.auth, provider);
   } catch (error) {
-    console.error(error);
-    setSyncStatus("Не удалось перенаправить на вход");
+    console.error("Ошибка авторизации:", error);
+    setSyncStatus("Ошибка входа: снимите блокировку всплывающих окон");
   }
 }
 
