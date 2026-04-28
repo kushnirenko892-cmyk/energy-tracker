@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Energy Task Tracker помогает выбирать задачи по текущему уровню энергии.">
+  <title>Energy Task Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="hero__copy">
+        <p class="eyebrow">Energy Task Tracker</p>
+        <h1>Выбирай задачу под свой заряд, а не через силу.</h1>
+        <p class="hero__text">
+          Минималистичный трекер задач и привычек с синхронизацией между устройствами.
+        </p>
+      </div>
+      <div class="hero__panel glass">
+        <div class="status-badge" id="syncStatus">Подготовка...</div>
+        <div class="auth-card" id="authCard">
+          <div id="userInfo" class="user-info hidden">
+            <img id="userAvatar" class="user-avatar" alt="Аватар пользователя">
+            <div>
+              <p id="userName" class="user-name"></p>
+              <p id="userEmail" class="user-email"></p>
+            </div>
+          </div>
+          <button id="googleSignInBtn" class="button button--primary">Войти через Google</button>
+          <button id="signOutBtn" class="button button--ghost hidden">Выйти</button>
+          <p class="helper-text" id="authHint">
+            Если Firebase не настроен, приложение автоматически запустится в локальном режиме.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel panel--energy">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Текущее состояние</p>
+            <h2>Что у тебя по энергии?</h2>
+          </div>
+          <p class="section-note">Тап по кнопке покажет случайную подходящую задачу.</p>
+        </div>
+
+        <div class="energy-grid">
+          <button class="energy-card energy-card--high" data-energy-level="3">
+            <span class="energy-card__label">Высокая</span>
+            <span class="energy-card__hint">Сложные и важные дела</span>
+          </button>
+          <button class="energy-card energy-card--medium" data-energy-level="2">
+            <span class="energy-card__label">Средняя</span>
+            <span class="energy-card__hint">Поддерживающие задачи</span>
+          </button>
+          <button class="energy-card energy-card--low" data-energy-level="1">
+            <span class="energy-card__label">Низкая</span>
+            <span class="energy-card__hint">Маленький шаг без перегруза</span>
+          </button>
+        </div>
+
+        <article class="focus-task glass" id="focusTaskCard">
+          <p class="section-kicker">Рекомендация</p>
+          <div id="focusTaskEmpty" class="focus-task__empty">
+            Выбери уровень энергии, и приложение предложит случайную задачу.
+          </div>
+          <div id="focusTaskContent" class="focus-task__content hidden">
+            <div>
+              <h3 id="focusTaskTitle"></h3>
+              <p id="focusTaskMeta" class="focus-task__meta"></p>
+            </div>
+            <button id="completeFocusTaskBtn" class="button button--primary">Отметить выполненной</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Привычки</p>
+            <h2>Ежедневный ритм</h2>
+          </div>
+        </div>
+
+        <form id="habitForm" class="stack-form">
+          <label class="input-group">
+            <span>Новая привычка</span>
+            <input id="habitTitleInput" type="text" maxlength="80" placeholder="Например, 10 минут растяжки" required>
+          </label>
+          <button class="button button--secondary" type="submit">Добавить привычку</button>
+        </form>
+
+        <div id="habitsList" class="habit-list"></div>
+      </section>
+
+      <section class="panel panel--tasks">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Задачи</p>
+            <h2>Быстрое добавление</h2>
+          </div>
+        </div>
+
+        <form id="taskForm" class="stack-form">
+          <label class="input-group">
+            <span>Название задачи</span>
+            <input id="taskTitleInput" type="text" maxlength="120" placeholder="Например, подготовить отчёт" required>
+          </label>
+          <label class="input-group">
+            <span>Стоимость по энергии</span>
+            <select id="taskEnergyInput" required>
+              <option value="3">Высокая энергия</option>
+              <option value="2">Средняя энергия</option>
+              <option value="1">Низкая энергия</option>
+            </select>
+          </label>
+          <button class="button button--primary" type="submit">Добавить задачу</button>
+        </form>
+
+        <div class="task-columns">
+          <div class="task-column">
+            <div class="column-head">
+              <h3>Активные</h3>
+              <span id="activeTasksCount" class="count-pill">0</span>
+            </div>
+            <div id="tasksList" class="task-list"></div>
+          </div>
+          <div class="task-column">
+            <div class="column-head">
+              <h3>Выполненные</h3>
+              <span id="completedTasksCount" class="count-pill">0</span>
+            </div>
+            <div id="completedTasksList" class="task-list task-list--done"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <template id="taskItemTemplate">
+    <article class="task-item glass">
+      <div class="task-item__main">
+        <span class="energy-pill"></span>
+        <h3 class="task-item__title"></h3>
+        <p class="task-item__meta"></p>
+      </div>
+      <div class="task-item__actions">
+        <button class="button button--ghost task-toggle-btn" type="button"></button>
+        <button class="icon-button task-delete-btn" type="button" aria-label="Удалить задачу">×</button>
+      </div>
+    </article>
+  </template>
+
+  <template id="habitItemTemplate">
+    <label class="habit-item glass">
+      <input class="habit-item__checkbox" type="checkbox">
+      <div class="habit-item__content">
+        <span class="habit-item__title"></span>
+        <span class="habit-item__meta"></span>
+      </div>
+      <button class="icon-button habit-delete-btn" type="button" aria-label="Удалить привычку">×</button>
+    </label>
+  </template>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>

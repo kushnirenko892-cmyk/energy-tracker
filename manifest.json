@@ -1,0 +1,18 @@
+{
+  "name": "Energy Task Tracker",
+  "short_name": "EnergyTracker",
+  "description": "PWA для задач и привычек с выбором по уровню энергии.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#0f172a",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
